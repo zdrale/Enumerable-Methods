@@ -13,4 +13,13 @@ module Enumerable
     end
   end
 
+
+  def my_select
+    arry = []
+    for i in self
+      arry << i if yield i
+    end
+    arry
+  end
+
 end
