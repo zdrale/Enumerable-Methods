@@ -4,14 +4,23 @@ This is the second ruby project that required us to recreate some of the methods
 Below are a list of methods we had to recreate.
 
 my_each
+
 my_each_with_index
+
 my_select
+
 my_all?
+
 my_any?
+
 my_none?
+
 my_count
+
 my_map
+
 my_inject
+
 multiply_els
 
 
