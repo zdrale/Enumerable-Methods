@@ -1,9 +1,14 @@
 module Enumerable
+
+  # ***************************     my_each     ********************************
+
   def my_each
     for i in self
       yield i
     end
   end
+
+  # ***************************     my_each_with_index     ********************************
 
   def my_each_with_index 
     i = 0
@@ -12,6 +17,8 @@ module Enumerable
       i += 1
     end
   end
+
+  # ***************************     my_select     ********************************
 
 
   def my_select
@@ -86,6 +93,9 @@ module Enumerable
     output
   end
 
+  
+# ***************************     my_count     ********************************
+
   def my_count 
     count = 0
     if self.size > 1
@@ -96,3 +106,21 @@ module Enumerable
   
 
 end
+
+# ***************************     my_count     ********************************
+
+def my_map(proc_block = nil)
+  return to_enum(:my_map) unless block_given?
+
+  new_arr = []
+
+  if proc_block.class == Proc and block_given?
+    my_each { |el| new_arr.push(proc_block.call(el)) }
+  else
+    my_each { |el| new_arr.push(yield(el)) }
+  end
+
+  new_arr
+end
+
+
