@@ -31,7 +31,7 @@ module Enumerable
                        my_select { |el| el.class <= arg }
                      else
                        my_select { |el| el == arg }
-    end
+                      end
     output = true if filtered_array == to_a
     output
   end
@@ -46,7 +46,7 @@ module Enumerable
                        my_select { |el| el.class <= arg }
                      else
                        my_select { |el| el == arg }
-    end
+                     end
     output = true unless filtered_array.to_a.empty?
     output
   end
@@ -61,7 +61,7 @@ module Enumerable
                        my_select { |el| el.class <= arg }
                      else
                        my_select { |el| el == arg }
-    end
+                     end
     output = true if filtered_array.to_a.empty?
     output
   end
