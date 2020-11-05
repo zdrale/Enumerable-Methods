@@ -24,13 +24,13 @@ module Enumerable
   def my_all?(arg = nil)
     output = false
     filtered_array = if !arg # no arguments
-    block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
-    elsif arg.is_a?(Regexp)
-      my_select { |el| arg.match(el) }
-    elsif arg.is_a?(Class)
-      my_select { |el| el.class <= arg }
-     else
-      my_select { |el| el == arg }
+                       block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
+                     elsif arg.is_a?(Regexp)
+                       my_select { |el| arg.match(el) }
+                     elsif arg.is_a?(Class)
+                       my_select { |el| el.class <= arg }
+                     else
+                       my_select { |el| el == arg }
     end
     output = true if filtered_array == to_a
     output
@@ -39,13 +39,13 @@ module Enumerable
   def my_any?(arg = nil)
     output = false
     filtered_array = if !arg # no arguments
-    block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
-    elsif arg.is_a?(Regexp)
-      my_select { |el| arg.match(el) }
-    elsif arg.is_a?(Class)
-      my_select { |el| el.class <= arg }
-    else
-      my_select { |el| el == arg }
+                       block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
+                     elsif arg.is_a?(Regexp)
+                       my_select { |el| arg.match(el) }
+                     elsif arg.is_a?(Class)
+                       my_select { |el| el.class <= arg }
+                     else
+                       my_select { |el| el == arg }
     end
     output = true unless filtered_array.to_a.empty?
     output
@@ -54,13 +54,13 @@ module Enumerable
   def my_none?(arg = nil)
     output = false
     filtered_array = if !arg
-    block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
-    elsif arg.is_a?(Regexp)
-      my_select { |el| arg.match(el) }
-    elsif arg.is_a?(Class)
-      my_select { |el| el.class <= arg }
-    else
-    my_select { |el| el == arg }
+                       block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
+                     elsif arg.is_a?(Regexp)
+                       my_select { |el| arg.match(el) }
+                     elsif arg.is_a?(Class)
+                       my_select { |el| el.class <= arg }
+                     else
+                       my_select { |el| el == arg }
     end
     output = true if filtered_array.to_a.empty?
     output
