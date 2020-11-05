@@ -1,15 +1,11 @@
 module Enumerable
-
   # ***************************     my_each     ********************************
-
   def my_each
     for i in self
       yield i
     end
   end
-
   # ***************************     my_each_with_index     ********************************
-
   def my_each_with_index 
     i = 0
     my_each do |item| 
@@ -17,10 +13,7 @@ module Enumerable
       i += 1
     end
   end
-
   # ***************************     my_select     ********************************
-
-
   def my_select
     arry = []
     for i in self
@@ -28,10 +21,7 @@ module Enumerable
     end
     arry
   end
-
-# ***************************     my_all     *********************************
-
-
+  # ***************************     my_all     *********************************
   def my_all?(arg = nil)
     output = false
 
@@ -48,12 +38,7 @@ module Enumerable
     output = true if filtered_array == to_a
     output
   end
-
-
-# ***************************     my_any     *********************************
-
-
-
+  # ***************************     my_any     *********************************
   def my_any?(arg = nil)
     output = false
 
@@ -70,12 +55,7 @@ module Enumerable
     output = true unless filtered_array.to_a.empty?
     output
   end
-
-
-# ***************************     my_none     ********************************
-
-
-
+  # ***************************     my_none     ********************************
   def my_none?(arg = nil)
     output = false
 
@@ -92,10 +72,7 @@ module Enumerable
     output = true if filtered_array.to_a.empty?
     output
   end
-
-  
-# ***************************     my_count     ********************************
-
+  # ***************************     my_count     ********************************
   def my_count 
     count = 0
     if self.size > 1
@@ -103,24 +80,42 @@ module Enumerable
     end
     yield count
   end
-  
+  # ***************************     my_map  ********************************
+  def my_map(proc_block = nil)
+    return to_enum(:my_map) unless block_given?
 
-end
+    new_arr = []
 
-# ***************************     my_count     ********************************
+    if proc_block.class == Proc and block_given?
+      my_each { |el| new_arr.push(proc_block.call(el)) }
+    else
+      my_each { |el| new_arr.push(yield(el)) }
+    end
 
-def my_map(proc_block = nil)
-  return to_enum(:my_map) unless block_given?
-
-  new_arr = []
-
-  if proc_block.class == Proc and block_given?
-    my_each { |el| new_arr.push(proc_block.call(el)) }
-  else
-    my_each { |el| new_arr.push(yield(el)) }
+    new_arr
   end
-
-  new_arr
+  # ***************************     my_inject  ********************************
+  def my_inject(init = nil)
+    if init == nil
+      initialize_num = true
+    elsif init.is_a?(Symbol)
+      return self.my_inject{|sum, n| sum.method(init).call(n)}
+    else
+      sum = init
+      initialize_num = false
+    end
+    for i in self
+      if initialize_num
+        sum = i
+        initialize_num = false
+      else
+        sum = yield sum, i  
+      end
+    end
+    sum
+  end
+  # ***************************     multiply_els  ********************************
+  def multiply_els(arr)
+    arr.my_inject {|n, total| n * total}
+  end
 end
-
-
