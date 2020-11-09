@@ -85,7 +85,6 @@ module Enumerable
     end
   end
 
-
   def my_map(proc_block = nil)
     return to_enum(:my_map) unless block_given?
 
@@ -100,8 +99,7 @@ module Enumerable
     new_arr
   end
 
-
-  def my_inject(init = nil, arg = nil)
+  def my_inject(init = nil, _arg = nil)
     if init.nil?
       initialize_num = true
     elsif init.is_a?(String || Symbol)
@@ -139,11 +137,7 @@ module Enumerable
     end
   end
 
-
-p (5..10).my_inject(2, :*) # should return 302400
-
   def multiply_els(arr)
     arr.my_inject { |n, total| n * total }
   end
-
 end
