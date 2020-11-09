@@ -69,7 +69,7 @@ module Enumerable
     output
   end
 
-  def my_count (argument=nil)
+  def my_count (argument = nil)
     if argument
       selected = my_select { |el| el == argument }
       selected.length
