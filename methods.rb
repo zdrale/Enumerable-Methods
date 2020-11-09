@@ -1,11 +1,13 @@
 module Enumerable
   def my_each
+    return to_enum(:my_each) unless block_given?
     for i in self
       yield i
     end
   end
 
   def my_each_with_index
+    return to_enum(:my_each_with_index) unless block_given?
     i = 0
     my_each do |item|
       yield item, i
@@ -14,6 +16,7 @@ module Enumerable
   end
 
   def my_select
+    return to_enum(:my_select) unless block_given?
     arry = []
     for i in self
       arry << i if yield i
@@ -66,11 +69,18 @@ module Enumerable
     output
   end
 
-  def my_count
-    count = 0
-    count += 1 if size > 1
-    yield count
+  def my_count (argument=nil)
+   counter = 0
+   if block_given?
+    to.a.my_each {|item| counter += 1 if yield(item)}
+   elsif !argument.nil?
+    to_a.my_each{|item| counter += 1 if argument == item}
+  else
+    counter = to_a.length
   end
+  counter
+  end  
+
 
   def my_map(proc_block = nil)
     return to_enum(:my_map) unless block_given?
@@ -86,10 +96,10 @@ module Enumerable
     new_arr
   end
 
-  def my_inject(init = nil)
+  def my_inject(init = nil, arg = nil)
     if init.nil?
       initialize_num = true
-    elsif init.is_a?(Symbol)
+    elsif init.is_a?(String || Symbol)
       return my_inject { |sum, n| sum.method(init).call(n) }
     else
       sum = init
@@ -109,4 +119,5 @@ module Enumerable
   def multiply_els(arr)
     arr.my_inject { |n, total| n * total }
   end
+
 end
