@@ -69,8 +69,8 @@ module Enumerable
     output
   end
 
-  def my_count (argument=nil)
-    if num
+  def my_count(argument = nil)
+    if argument
       selected = my_select { |el| el == argument }
       selected.length
     else
@@ -86,7 +86,6 @@ module Enumerable
   end
 
 
-
   def my_map(proc_block = nil)
     return to_enum(:my_map) unless block_given?
 
@@ -100,6 +99,7 @@ module Enumerable
 
     new_arr
   end
+
 
   def my_inject(init = nil, arg = nil)
     if init.nil?
