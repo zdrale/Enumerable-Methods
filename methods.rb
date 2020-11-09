@@ -70,7 +70,7 @@ module Enumerable
   end
 
   def my_count (argument=nil)
-    if num
+    if argument
       selected = my_select { |el| el == argument }
       selected.length
     else
