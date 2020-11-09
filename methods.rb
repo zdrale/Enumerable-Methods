@@ -70,16 +70,21 @@ module Enumerable
   end
 
   def my_count (argument=nil)
-   counter = 0
-   if block_given?
-    to.a.my_each {|item| counter += 1 if yield(item)}
-   elsif !argument.nil?
-    to_a.my_each{|item| counter += 1 if argument == item}
-  else
-    counter = to_a.length
+    if num
+      selected = my_select { |el| el == argument }
+      selected.length
+    else
+      return to_a.length unless block_given?
+
+      count = 0
+
+      my_each do |el|
+        yield(el) && count += 1
+      end
+      count
+    end
   end
-  counter
-  end  
+
 
 
   def my_map(proc_block = nil)
