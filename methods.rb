@@ -121,6 +121,27 @@ module Enumerable
     sum
   end
 
+  def my_inject(num = nil, symbol = nil)
+    if block_given?
+      sum = num
+      my_each { |item| sum = sum.nil? ? item : yield(sum, item) }
+      sum
+    elsif !num.nil? && (num.is_a?(Symbol) || num.is_a?(String))
+      sum = nil
+      my_each { |item| sum = sum.nil? ? item : sum.send(num, item) }
+      sum
+    elsif !symbol.nil? && (symbol.is_a?(Symbol) || symbol.is_a?(String))
+      sum = num
+      my_each { |item| sum = sum.nil? ? item : sum.send(symbol, item) }
+      sum
+    else
+      raise LocalJumpError unless block_given?
+    end
+  end
+
+
+p (5..10).my_inject(2, :*) # should return 302400
+
   def multiply_els(arr)
     arr.my_inject { |n, total| n * total }
   end
