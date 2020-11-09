@@ -99,26 +99,6 @@ module Enumerable
     new_arr
   end
 
-  def my_inject(init = nil, _arg = nil)
-    if init.nil?
-      initialize_num = true
-    elsif init.is_a?(String || Symbol)
-      return my_inject { |sum, n| sum.method(init).call(n) }
-    else
-      sum = init
-      initialize_num = false
-    end
-    for i in self
-      if initialize_num
-        sum = i
-        initialize_num = false
-      else
-        sum = yield sum, i
-      end
-    end
-    sum
-  end
-
   def my_inject(num = nil, symbol = nil)
     if block_given?
       sum = num
