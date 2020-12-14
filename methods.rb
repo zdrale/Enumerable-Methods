@@ -1,13 +1,13 @@
 module Enumerable
-  def my_each
+  def my_each(&block)
     return to_enum(:my_each) unless block_given?
-    for i in self
-      yield i
-    end
+
+    each(&block)
   end
 
   def my_each_with_index
     return to_enum :my_each_with_index unless block_given?
+
     i = 0
     my_each do |item|
       yield item, i
@@ -17,17 +17,18 @@ module Enumerable
 
   def my_select
     return to_enum :my_select unless block_given?
+
     arry = []
-    for i in self
+    each do |i|
       arry << i if yield i
     end
     arry
   end
 
-  def my_all?(arg = nil)
+  def my_all?(arg = nil, &block)
     output = false
     filtered_array = if !arg # no arguments
-                       block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
+                       block_given? ? my_select(&block) : my_select { |el| el }
                      elsif arg.is_a?(Regexp)
                        my_select { |el| arg.match(el) }
                      elsif arg.is_a?(Class)
@@ -39,10 +40,10 @@ module Enumerable
     output
   end
 
-  def my_any?(arg = nil)
+  def my_any?(arg = nil, &block)
     output = false
     filtered_array = if !arg # no arguments
-                       block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
+                       block_given? ? my_select(&block) : my_select { |el| el }
                      elsif arg.is_a?(Regexp)
                        my_select { |el| arg.match(el) }
                      elsif arg.is_a?(Class)
@@ -54,10 +55,10 @@ module Enumerable
     output
   end
 
-  def my_none?(arg = nil)
+  def my_none?(arg = nil, &block)
     output = false
     filtered_array = if !arg
-                       block_given? ? my_select { |el| yield(el) } : my_select { |el| el }
+                       block_given? ? my_select(&block) : my_select { |el| el }
                      elsif arg.is_a?(Regexp)
                        my_select { |el| arg.match(el) }
                      elsif arg.is_a?(Class)
@@ -90,7 +91,7 @@ module Enumerable
 
     new_arr = []
 
-    if proc_block.class == Proc and block_given?
+    if proc_block.instance_of?(Proc) and block_given?
       my_each { |el| new_arr.push(proc_block.call(el)) }
     else
       my_each { |el| new_arr.push(yield(el)) }
