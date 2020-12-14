@@ -1,4 +1,5 @@
-require './methods.rb'
+require 'rspec'
+require '../methods.rb'
 
 describe Enumerable do
   let(:array) { [1, 3, 5, 7] }
