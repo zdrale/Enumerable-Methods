@@ -25,13 +25,11 @@ module Enumerable
   # ############################################################################
 
   def my_each_with_index
-    return to_enum(:my_each_with_index) unless block_given?
-
-    index = 0
-
-    my_each do |el|
-      yield(el, index)
-      index += 1
+    return to_enum :my_each_with_index unless block_given?
+    i = 0
+    my_each do |item|
+      yield item, i
+      i += 1
     end
 
     self
@@ -44,28 +42,10 @@ module Enumerable
   # ############################################################################
 
   def my_select
-    return to_enum(:my_select) unless block_given?
-
-    filtered = []
-
-    if self.class == Hash
-      filtered = {}
-
-      my_each do |el|
-        key = el [0]
-        value = el [1]
-        filtered [key] = value if yield(el[0])
-      end
-
-      filtered
-
-    else
-
-      filtered = []
-
-      my_each do |el|
-        filtered.push(el) if yield(el)
-      end
+    return to_enum :my_select unless block_given?
+    arry = []
+    for i in self
+      arry << i if yield i
     end
 
     filtered
@@ -165,12 +145,15 @@ module Enumerable
     end
   end
 
+<<<<<<< HEAD
   # ############################################################################
 
   # ***************************     my_map     *********************************
 
   # ############################################################################
 
+=======
+>>>>>>> 6422db4d8d41e870337c18aa32ed4807b53d46e1
   def my_map(proc_block = nil)
     return to_enum(:my_map) unless block_given?
 
@@ -185,63 +168,26 @@ module Enumerable
     new_arr
   end
 
-  # ############################################################################
-
-  # ***************************     my_inject     ******************************
-
-  # ############################################################################
-
-  def my_inject(arg = nil, symb = nil)
-    output = ''
-
-    # if block_given?
-
-    if arg.class <= Symbol || (symb.class <= Symbol and arg) # checking if one of arguments is symbol
-
-      if symb.nil?
-
-        ind = 1
-        output = to_a[0]
-        while ind < to_a.length
-          output = output.send(arg, to_a[ind])
-          ind += 1
-        end
-      else
-        output = arg
-        my_each { |el| output = output.send(symb, el) }
-      end
-
-    elsif block_given?
-
-      if arg # checking if block has default value
-        output = arg
-        to_a.my_each { |el| output = yield(output, el) }
-      else
-
-        ind = 1
-        output = to_a[0]
-        while ind < to_a.length
-          output = yield(output, to_a[ind])
-          ind += 1
-        end
-      end
-
+  def my_inject(num = nil, symbol = nil)
+    if block_given?
+      sum = num
+      my_each { |item| sum = sum.nil? ? item : yield(sum, item) }
+      sum
+    elsif !num.nil? && (num.is_a?(Symbol) || num.is_a?(String))
+      sum = nil
+      my_each { |item| sum = sum.nil? ? item : sum.send(num, item) }
+      sum
+    elsif !symbol.nil? && (symbol.is_a?(Symbol) || symbol.is_a?(String))
+      sum = num
+      my_each { |item| sum = sum.nil? ? item : sum.send(symbol, item) }
+      sum
     else
-      raise LocalJumpError, 'no block given'
+      raise LocalJumpError unless block_given?
     end
+  end
 
     output
   end
-end
-
-# ############################################################################
-
-# ***************************     multiply_els    ****************************
-
-# ############################################################################
-
-def multiply_els(arr)
-  arr.my_inject(1) { |acc, sum| acc * sum }
 end
 
 p Range.new(1, 4).my_inject(-10, :/)
